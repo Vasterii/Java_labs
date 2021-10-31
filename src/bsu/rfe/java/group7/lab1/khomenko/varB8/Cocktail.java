@@ -1,4 +1,4 @@
-package mainpackage;
+package bsu.rfe.java.group7.lab1.khomenko.varB8;
 
 public class Cocktail extends Food {
     private String fruit;
@@ -35,6 +35,7 @@ public class Cocktail extends Food {
     public String toString() {
         return super.toString() + " из '" + drink.toUpperCase() + " и '" + fruit.toUpperCase() + "'";
     }
+
 
     @Override
     public boolean equals(Object arg0) {

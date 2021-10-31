@@ -1,4 +1,4 @@
-package mainpackage;
+package bsu.rfe.java.group7.lab1.khomenko.varB8;
 
 public class ChewingGum extends Food{
     private String flavour;

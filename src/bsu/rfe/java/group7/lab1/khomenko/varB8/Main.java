@@ -1,4 +1,4 @@
-package mainpackage;
+package bsu.rfe.java.group7.lab1.khomenko.varB8;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -47,45 +47,6 @@ public class Main {
                     itemsSoFar++;
                 }
 
-                try {
-                    Class myClass = Class.forName("mainpackage." + parts[0]);
-
-                    if (parts.length==1) {
-
-                        Constructor constructor = myClass.getConstructor();
-                        breakfast[i] = (Food)constructor.newInstance();
-                    }
-                    else if (parts.length==2) {
-
-                        Constructor constructor = myClass.getConstructor(String.class);
-                        breakfast[i] = (Food)constructor.newInstance(parts[1]);
-                    }
-                    else if (parts.length==3) {
-
-                        Constructor constructor = myClass.getConstructor(String.class, String.class);
-                        breakfast[i] = (Food)constructor.newInstance(parts[1],parts[2] );
-                    }
-                }
-                catch (ClassNotFoundException e) {
-                    System.out.println("(" + i + ") Продукт не может быть включен в завтрак!");
-                    continue;
-                }
-                catch(NoSuchMethodException e){
-                    System.out.println("Метод отсутствует.");
-                    continue;
-                }
-                catch (InvocationTargetException e) {
-                    System.out.println(e);
-                    continue;
-                }
-                catch (InstantiationException e) {
-                    System.out.println(e);
-                    continue;
-                }
-                catch (IllegalAccessException e) {
-                    System.out.println(e);
-                    continue;
-                }
             }
         }
 
@@ -93,6 +54,8 @@ public class Main {
         for (int i = 0; i < breakfast.length; i++) {
             if (breakfast[i] != null)
                 breakfast[i].consume();
+            else
+                break;
         }
 
         if (calories_needed) {
