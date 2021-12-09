@@ -21,7 +21,7 @@ public class GraphicsDisplay extends JPanel {
     private Double[][] graphicsData;
 
     // Флаговые переменные, задающие правила отображения графика
-    private boolean showAxis = true, showMarkers = true, showLevels = false;
+    private boolean showAxis = true, showMarkers = true, showGrid = true, showLevels = false;
 
     // Границы диапазона пространства, подлежащего отображению
     private double minX, maxX, minY, maxY;
@@ -30,7 +30,7 @@ public class GraphicsDisplay extends JPanel {
     private double scale;
 
     // Различные стили черчения линий
-    private BasicStroke graphicsStroke, axisStroke, markerStroke, levelStroke;
+    private BasicStroke graphicsStroke, gridStroke, axisStroke, markerStroke, levelStroke;
 
     // Различные шрифты отображения надписей
     private Font axisFont, levelsFont;
@@ -56,6 +56,10 @@ public class GraphicsDisplay extends JPanel {
         // Перо для рисования графика
         graphicsStroke = new BasicStroke(5.0f, BasicStroke.CAP_BUTT,
                 BasicStroke.JOIN_ROUND, 10.0f, new float[] {5,5,5,5,5,5,20,5,10,5,10,5}, 0.0f);
+
+        // Перо для рисования сетки
+        gridStroke = new BasicStroke(1.0f, BasicStroke.CAP_BUTT,
+                BasicStroke.JOIN_ROUND, 10.0f, null, 0.0f);
 
         // Перо для рисования осей координат
         axisStroke = new BasicStroke(2.0f, BasicStroke.CAP_BUTT,
@@ -96,6 +100,10 @@ public class GraphicsDisplay extends JPanel {
     }
     public void setShowLevels(boolean showLevels) {
         this.showLevels = showLevels;
+        repaint();
+    }
+    public void setShowGrid(boolean showGrid){
+        this.showGrid = showGrid;
         repaint();
     }
 
@@ -157,6 +165,8 @@ public class GraphicsDisplay extends JPanel {
 
         // Вызов методов отображения элементов графика
         // Порядок вызова методов имеет значение (редыдущий рисунок будет затираться последующим)
+        if (showGrid)
+            paintGrid(canvas); // Сетка
         if (showAxis)
             paintAxis(canvas); // Оси координат
         paintGraphics(canvas); // График
@@ -223,6 +233,92 @@ public class GraphicsDisplay extends JPanel {
         canvas.drawString("50%", (float)labelPos2.getX() + 5, (float)(labelPos2.getY() - 3));// - bounds.getY()));
         canvas.drawString("10%", (float)labelPos3.getX() + 5, (float)(labelPos3.getY() - 3));// - bounds.getY()));
 
+    }
+
+    private double fix0MAX(final double m) {
+        double mm = m;
+        int o = 1;
+        while (mm < 1.0d) {
+            mm = mm * 10;
+            o *= 10;
+        }
+        int i = (int) mm + 1;
+        return (double) i / o;
+    }
+
+    private double fix1MAX(final double m) {
+        double mm = m;
+        int o = 1;
+        while (mm > 1.0d) {
+            mm = mm / 10;
+            o *= 10;
+        }
+        mm *= 10;
+        int i = (int) mm + 1;
+        o /= 10;
+        return (double) i * o;
+    }
+
+    // Отрисовка сетки
+    protected void paintGrid(Graphics2D canvas) {
+
+        GeneralPath graphics = new GeneralPath();
+        double MAX = Math.max(Math.abs(maxX - minX), Math.abs(maxY - minY));
+        double step = 0.0f;
+
+        if (MAX / 20 < 1)
+            step = fix0MAX(MAX / 20);
+        else
+            step = fix1MAX(MAX / 20);
+
+        Color oldColor = canvas.getColor();
+        Stroke oldStroke = canvas.getStroke();
+        canvas.setStroke(gridStroke);
+        canvas.setColor(Color.GRAY);
+
+        int xp = 0;
+        double x = 0.0d;
+        int gH = getHeight();
+        int gW = getWidth();
+
+        xp = (int) xyToPoint(0, 0).x;
+        while (xp > 0) {
+            graphics.moveTo(xp, 0);
+            graphics.lineTo(xp, gH);
+            xp = (int) xyToPoint(x, 0).x;
+            x -= step;
+        }
+
+        xp = (int) xyToPoint(0, 0).x;
+        while (xp < gW) {
+            graphics.moveTo(xp, 0);
+            graphics.lineTo(xp, gH);
+            xp = (int) xyToPoint(x, 0).x;
+            x += step;
+        }
+
+        int yp = (int) xyToPoint(0, 0).y;
+        double y = 0.0f;
+        while (yp < gH) {
+            yp = (int) xyToPoint(0, y).y;
+            graphics.moveTo(0, yp);
+            graphics.lineTo(gW, yp);
+            y -= step;
+        }
+
+        yp = (int) xyToPoint(0, 0).y;
+        while (yp > 0) {
+            yp = (int) xyToPoint(0, y).y;
+            graphics.moveTo(0, yp);
+            graphics.lineTo(gW, yp);
+            y += step;
+        }
+
+        canvas.draw(graphics);
+        //paintHatch(canvas, 0, 0, step / 10);
+        //paintCaptions(canvas, step);
+        canvas.setColor(oldColor);
+        canvas.setStroke(oldStroke);
     }
 
     // Отображение маркеров точек, по которым рисовался график
