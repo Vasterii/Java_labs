@@ -29,7 +29,7 @@ public class MainFrame extends JFrame {
     private JFileChooser fileChooser = null;
 
     // Пункты меню
-    private JCheckBoxMenuItem showAxisMenuItem, showMarkersMenuItem, showLevelsMenuItem;
+    private JCheckBoxMenuItem showAxisMenuItem, showMarkersMenuItem, showLevelsMenuItem, showGridItem;;
 
     // Компонент-отображатель графика
     private GraphicsDisplay display = new GraphicsDisplay();
@@ -113,6 +113,16 @@ public class MainFrame extends JFrame {
         graphicsMenu.add(showLevelsMenuItem);
         showLevelsMenuItem.setSelected(false);
 
+
+        Action showGridAction = new AbstractAction("Показывать сетку") {
+            public void actionPerformed(ActionEvent event) {
+                display.setShowGrid(showGridItem.isSelected());
+            }
+        };
+        showGridItem = new JCheckBoxMenuItem(showGridAction);
+        graphicsMenu.add(showGridItem);
+        showGridItem.setSelected(true);
+
         // Зарегистрировать обработчик событий, связанных с меню "График"
         graphicsMenu.addMenuListener(new GraphicsMenuListener());
 
@@ -175,6 +185,7 @@ public class MainFrame extends JFrame {
             // Доступность или недоступность элементов меню "График" определяется загруженностью данных
             showAxisMenuItem.setEnabled(fileLoaded);
             showMarkersMenuItem.setEnabled(fileLoaded);
+            showGridItem.setEnabled(fileLoaded);
             showLevelsMenuItem.setEnabled(fileLoaded);
         }
 
