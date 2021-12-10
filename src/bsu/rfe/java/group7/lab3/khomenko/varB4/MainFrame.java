@@ -173,6 +173,7 @@ public class MainFrame extends JFrame {
         hboxRange.add(Box.createHorizontalStrut(10));
         hboxRange.add(textFieldStep);
         hboxRange.add(Box.createHorizontalGlue());
+
         // Установить предпочтительный размер области равным удвоенному
         // минимальному, чтобы при компоновке область совсем не сдавили
         hboxRange.setPreferredSize(new Dimension(new Double(hboxRange.getMaximumSize().getWidth()).intValue(),
@@ -239,9 +240,9 @@ public class MainFrame extends JFrame {
         Box hboxButtons = Box.createHorizontalBox();
         hboxButtons.setBorder(BorderFactory.createBevelBorder(1));
         hboxButtons.add(Box.createHorizontalGlue());
-        hboxButtons.add(buttonCalc);
-        hboxButtons.add(Box.createHorizontalStrut(30));
         hboxButtons.add(buttonReset);
+        hboxButtons.add(Box.createHorizontalStrut(30));
+        hboxButtons.add(buttonCalc);
         hboxButtons.add(Box.createHorizontalGlue());
 
         hboxButtons.setPreferredSize(new Dimension(new
