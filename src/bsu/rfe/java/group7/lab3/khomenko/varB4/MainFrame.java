@@ -6,11 +6,8 @@ import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.DataOutputStream;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.PrintStream;
+import java.io.*;
+import java.util.Scanner;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.BorderFactory;
@@ -129,8 +126,17 @@ public class MainFrame extends JFrame {
         // Создать новое действие по выведению описания программы
         Action aboutProgramAction = new AbstractAction("О программе") {
             public void actionPerformed(ActionEvent event) {
-                JOptionPane.showMessageDialog(MainFrame.this, "Хоменко Святослав, " +
-                        "2 курс 7 группа");
+                String message = "";
+                try {
+                    Scanner scanner = new Scanner(new File("README.txt"));
+                    while (scanner.hasNextLine())
+                    {
+                        message += scanner.nextLine() + "\n";
+                    }
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }
+                JOptionPane.showMessageDialog(MainFrame.this, message);
             }
         };
 
