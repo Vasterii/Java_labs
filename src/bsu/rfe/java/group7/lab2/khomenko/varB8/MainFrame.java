@@ -128,7 +128,6 @@ public class MainFrame extends JFrame {
         addRadioButton("Формула 2", 2);
         radioButtons.setSelected(radioButtons.getElements().nextElement().getModel(), true);
         hboxFormulaType.add(Box.createHorizontalGlue());
-        hboxFormulaType.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 
         //Радио-кнопки памяти
         hboxMemoryType.add(Box.createHorizontalGlue());
@@ -270,13 +269,12 @@ public class MainFrame extends JFrame {
         hboxMemory.add(Box.createHorizontalGlue());
         hboxMemory.add(buttonMPlus);
         hboxMemory.add(Box.createHorizontalStrut(10));
-        //hboxMemory.add(Box.createHorizontalGlue());
         labelMemory.setPreferredSize(new Dimension(120, 10));
         hboxMemory.add(labelMemory, BorderLayout.CENTER);
-        //hboxMemory.add(Box.createHorizontalGlue());
         hboxMemory.add(Box.createHorizontalStrut(10));
         hboxMemory.add(buttonMC);
         hboxMemory.add(Box.createHorizontalGlue());
+        hboxMemory.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 
 
         Box hboxButtons = Box.createHorizontalBox();
@@ -285,7 +283,7 @@ public class MainFrame extends JFrame {
         hboxButtons.add(Box.createHorizontalStrut(30));
         hboxButtons.add(buttonReset);
         hboxButtons.add(Box.createHorizontalGlue());
-        hboxButtons.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+        //hboxButtons.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 
 
 
@@ -294,8 +292,6 @@ public class MainFrame extends JFrame {
         Box contentBox = Box.createVerticalBox();
         contentBox.add(Box.createVerticalGlue());
         contentBox.add(hboxFormulaType);
-        //contentBox.add(hboxVariables); contentBox.add(hboxVariableX); contentBox.add(hboxVariableY);
-        //contentBox.add(hboxVariableZ); contentBox.add(hboxResult);
         contentBox.add(hboxVandR);
         contentBox.add(hboxMemory);
         contentBox.add(hboxMemoryType);
