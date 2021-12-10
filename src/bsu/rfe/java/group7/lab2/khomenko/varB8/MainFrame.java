@@ -292,8 +292,8 @@ public class MainFrame extends JFrame {
         Box contentBox = Box.createVerticalBox();
         contentBox.add(Box.createVerticalGlue());
         contentBox.add(hboxFormulaType);
-        contentBox.add(hboxVandR);
         contentBox.add(hboxMemory);
+        contentBox.add(hboxVandR);
         contentBox.add(hboxMemoryType);
         contentBox.add(hboxButtons);
         contentBox.add(Box.createVerticalGlue());
