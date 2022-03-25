@@ -14,13 +14,16 @@ public class BouncingBall implements Runnable {
     private int radius;
     private Color color;
 
+    private float redColor;
+    private float greenColor;
+    private float blueColor;
+
     private double x;
     private double y;
 
     private int speed;
     private double speedX;
     private double speedY;
-
 
 
     public BouncingBall(Field field) {
@@ -46,8 +49,10 @@ public class BouncingBall implements Runnable {
         speedY = 3*Math.sin(angle);
 
         // Цвет мяча
-        color = new Color((float)Math.random(), (float)Math.random(),
-                (float)Math.random());
+        redColor = (float)Math.random();
+        greenColor = (float)Math.random();
+        blueColor = (float)Math.random();
+        color = new Color(redColor, greenColor, blueColor);
 
         // Начальное положение мяча
         x = Math.random()*(field.getSize().getWidth()-2*radius) + radius;
@@ -105,6 +110,15 @@ public class BouncingBall implements Runnable {
         }
     }
 
+    public float getRedColor(){
+        return redColor;
+    }
+    public float getGreenColor(){
+        return greenColor;
+    }
+    public float getBlueColor(){
+        return blueColor;
+    }
 
     // Метод прорисовки самого себя
     public void paint(Graphics2D canvas) {

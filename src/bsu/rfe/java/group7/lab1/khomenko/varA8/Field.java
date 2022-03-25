@@ -11,6 +11,7 @@ public class Field extends JPanel {
 
 
     private boolean isPaused;
+    private boolean blueBallsPaused;
 
     // Динамический список скачущих мячей
     private ArrayList<BouncingBall> balls = new ArrayList<BouncingBall>(10);
@@ -29,6 +30,9 @@ public class Field extends JPanel {
         repaintTimer.start();
     }
 
+    public void pauseBlueBalls(){
+        blueBallsPaused = true;
+    }
 
     public void paintComponent(Graphics g) {
 
@@ -54,6 +58,7 @@ public class Field extends JPanel {
 
     public synchronized void resume() {
         isPaused = false;
+        blueBallsPaused = false;
         notifyAll(); // Будим все ожидающие продолжения потоки
     }
 
@@ -62,6 +67,10 @@ public class Field extends JPanel {
     public synchronized void canMove(BouncingBall ball) throws InterruptedException {
         if (isPaused) {
             wait(); // Поток, зашедший внутрь данного метода, засыпает
+        }
+        if (blueBallsPaused && 2 * (ball.getRedColor() +
+                ball.getGreenColor()) < ball.getBlueColor()){
+            wait();
         }
     }
 }

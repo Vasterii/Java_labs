@@ -11,6 +11,7 @@ public class MainFrame extends JFrame {
     private static final int WIDTH = 700;
     private static final int HEIGHT = 500;
     private JMenuItem pauseMenuItem;
+    private JMenuItem pauseBlueMenuItem;
     private JMenuItem resumeMenuItem;
 
     // Поле, по которому прыгают мячи
@@ -40,10 +41,10 @@ public class MainFrame extends JFrame {
         Action addBallAction = new AbstractAction("Добавить мяч") {
             public void actionPerformed(ActionEvent event) {
                 field.addBall();
-
                 // Ни один из пунктов меню не являются доступными - сделать доступным "Паузу"
                 if (!pauseMenuItem.isEnabled() && !resumeMenuItem.isEnabled()) {
                     pauseMenuItem.setEnabled(true);
+                    pauseBlueMenuItem.setEnabled(true);
                 }
             }
         };
@@ -59,6 +60,7 @@ public class MainFrame extends JFrame {
             public void actionPerformed(ActionEvent event) {
                 field.pause();
                 pauseMenuItem.setEnabled(false);
+                pauseBlueMenuItem.setEnabled(false);
                 resumeMenuItem.setEnabled(true);
             }
         };
@@ -70,11 +72,25 @@ public class MainFrame extends JFrame {
             public void actionPerformed(ActionEvent event) {
                 field.resume();
                 pauseMenuItem.setEnabled(true);
+                pauseBlueMenuItem.setEnabled(true);
                 resumeMenuItem.setEnabled(false);
             }
         };
         resumeMenuItem = controlMenu.add(resumeAction);
         resumeMenuItem.setEnabled(false);
+
+
+        Action pauseBlueAction = new AbstractAction("Остановить синие мячи") {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                field.pauseBlueBalls();
+                pauseMenuItem.setEnabled(false);
+                pauseBlueMenuItem.setEnabled(false);
+                resumeMenuItem.setEnabled(true);
+            }
+        };
+        pauseBlueMenuItem = controlMenu.add(pauseBlueAction);
+        pauseBlueMenuItem.setEnabled(true);
 
 
         // Добавить в центр граничной компоновки поле Field
