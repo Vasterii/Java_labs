@@ -11,8 +11,11 @@ public class MainFrame extends JFrame {
     private static final int WIDTH = 700;
     private static final int HEIGHT = 500;
     private JMenuItem pauseMenuItem;
-    private JMenuItem pauseBlueMenuItem;
     private JMenuItem resumeMenuItem;
+
+    private JMenuItem pauseRedMenuItem;
+    private JMenuItem pauseGreenMenuItem;
+    private JMenuItem pauseBlueMenuItem;
 
     // Поле, по которому прыгают мячи
     private Field field = new Field();
@@ -44,6 +47,8 @@ public class MainFrame extends JFrame {
                 // Ни один из пунктов меню не являются доступными - сделать доступным "Паузу"
                 if (!pauseMenuItem.isEnabled() && !resumeMenuItem.isEnabled()) {
                     pauseMenuItem.setEnabled(true);
+                    pauseRedMenuItem.setEnabled(true);
+                    pauseGreenMenuItem.setEnabled(true);
                     pauseBlueMenuItem.setEnabled(true);
                 }
             }
@@ -55,11 +60,14 @@ public class MainFrame extends JFrame {
         JMenu controlMenu = new JMenu("Управление");
         menuBar.add(controlMenu);
 
+        JMenu pauseColoredBallsMenu = new JMenu("Остановить мячи определённого цвета");
 
         Action pauseAction = new AbstractAction("Приостановить движение") {
             public void actionPerformed(ActionEvent event) {
                 field.pause();
                 pauseMenuItem.setEnabled(false);
+                pauseRedMenuItem.setEnabled(false);
+                pauseGreenMenuItem.setEnabled(false);
                 pauseBlueMenuItem.setEnabled(false);
                 resumeMenuItem.setEnabled(true);
             }
@@ -72,6 +80,8 @@ public class MainFrame extends JFrame {
             public void actionPerformed(ActionEvent event) {
                 field.resume();
                 pauseMenuItem.setEnabled(true);
+                pauseRedMenuItem.setEnabled(true);
+                pauseGreenMenuItem.setEnabled(true);
                 pauseBlueMenuItem.setEnabled(true);
                 resumeMenuItem.setEnabled(false);
             }
@@ -80,18 +90,42 @@ public class MainFrame extends JFrame {
         resumeMenuItem.setEnabled(false);
 
 
+        Action pauseRedAction = new AbstractAction("Остановить красные мячи") {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                field.pauseRedBalls();
+                pauseRedMenuItem.setEnabled(false);
+                resumeMenuItem.setEnabled(true);
+            }
+        };
+        pauseRedMenuItem = pauseColoredBallsMenu.add(pauseRedAction);
+        pauseRedMenuItem.setEnabled(true);
+
+
+        Action pauseGreenAction = new AbstractAction("Остановить зелёные мячи") {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                field.pauseGreenBalls();
+                pauseGreenMenuItem.setEnabled(false);
+                resumeMenuItem.setEnabled(true);
+            }
+        };
+        pauseGreenMenuItem = pauseColoredBallsMenu.add(pauseGreenAction);
+        pauseGreenMenuItem.setEnabled(true);
+
+
         Action pauseBlueAction = new AbstractAction("Остановить синие мячи") {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 field.pauseBlueBalls();
-                pauseMenuItem.setEnabled(false);
                 pauseBlueMenuItem.setEnabled(false);
                 resumeMenuItem.setEnabled(true);
             }
         };
-        pauseBlueMenuItem = controlMenu.add(pauseBlueAction);
+        pauseBlueMenuItem = pauseColoredBallsMenu.add(pauseBlueAction);
         pauseBlueMenuItem.setEnabled(true);
 
+        controlMenu.add(pauseColoredBallsMenu);
 
         // Добавить в центр граничной компоновки поле Field
         getContentPane().add(field, BorderLayout.CENTER);
