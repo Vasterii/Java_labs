@@ -17,6 +17,11 @@ public class MainFrame extends JFrame {
     private JMenuItem pauseGreenMenuItem;
     private JMenuItem pauseBlueMenuItem;
 
+    private JMenuItem pauseFirstQuarterMenuItem;
+    private JMenuItem pauseSecondQuarterMenuItem;
+    private JMenuItem pauseThirdQuarterMenuItem;
+    private JMenuItem pauseForthQuarterMenuItem;
+
     // Поле, по которому прыгают мячи
     private Field field = new Field();
 
@@ -61,6 +66,9 @@ public class MainFrame extends JFrame {
         menuBar.add(controlMenu);
 
         JMenu pauseColoredBallsMenu = new JMenu("Остановить мячи определённого цвета");
+        JMenu pauseAngledBallsMenu = new JMenu("Остановить мячи определённого угла");
+        JMenu pauseSpeededBallsMenu = new JMenu("Остановить мячи определённой скорости");
+        JMenu pauseRadiusedBallsMenu = new JMenu("Остановить мячи определённого радиуса");
 
         Action pauseAction = new AbstractAction("Приостановить движение") {
             public void actionPerformed(ActionEvent event) {
@@ -75,19 +83,29 @@ public class MainFrame extends JFrame {
         pauseMenuItem = controlMenu.add(pauseAction);
         pauseMenuItem.setEnabled(false);
 
-
         Action resumeAction = new AbstractAction("Возобновить движение") {
             public void actionPerformed(ActionEvent event) {
                 field.resume();
                 pauseMenuItem.setEnabled(true);
+
                 pauseRedMenuItem.setEnabled(true);
                 pauseGreenMenuItem.setEnabled(true);
                 pauseBlueMenuItem.setEnabled(true);
+
+                pauseFirstQuarterMenuItem.setEnabled(true);
+                pauseSecondQuarterMenuItem.setEnabled(true);
+                pauseThirdQuarterMenuItem.setEnabled(true);
+                pauseForthQuarterMenuItem.setEnabled(true);
+
                 resumeMenuItem.setEnabled(false);
             }
         };
         resumeMenuItem = controlMenu.add(resumeAction);
         resumeMenuItem.setEnabled(false);
+
+
+
+
 
 
         Action pauseRedAction = new AbstractAction("Остановить красные мячи") {
@@ -101,7 +119,6 @@ public class MainFrame extends JFrame {
         pauseRedMenuItem = pauseColoredBallsMenu.add(pauseRedAction);
         pauseRedMenuItem.setEnabled(true);
 
-
         Action pauseGreenAction = new AbstractAction("Остановить зелёные мячи") {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
@@ -112,7 +129,6 @@ public class MainFrame extends JFrame {
         };
         pauseGreenMenuItem = pauseColoredBallsMenu.add(pauseGreenAction);
         pauseGreenMenuItem.setEnabled(true);
-
 
         Action pauseBlueAction = new AbstractAction("Остановить синие мячи") {
             @Override
@@ -126,6 +142,57 @@ public class MainFrame extends JFrame {
         pauseBlueMenuItem.setEnabled(true);
 
         controlMenu.add(pauseColoredBallsMenu);
+
+
+
+
+
+
+        Action pauseFirstQuarter = new AbstractAction("Остановить мячи с углом 1 четверти") {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                field.pauseFirstQuarter();
+                pauseFirstQuarterMenuItem.setEnabled(false);
+                resumeMenuItem.setEnabled(true);
+            }
+        };
+        pauseFirstQuarterMenuItem = pauseAngledBallsMenu.add(pauseFirstQuarter);
+        pauseFirstQuarterMenuItem.setEnabled(true);
+
+        Action pauseSecondQuarter = new AbstractAction("Остановить мячи с углом 2 четверти") {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                field.pauseSecondQuarter();
+                pauseSecondQuarterMenuItem.setEnabled(false);
+                resumeMenuItem.setEnabled(true);
+            }
+        };
+        pauseSecondQuarterMenuItem = pauseAngledBallsMenu.add(pauseSecondQuarter);
+        pauseSecondQuarterMenuItem.setEnabled(true);
+
+        Action pauseThirdQuarter = new AbstractAction("Остановить мячи с углом 3 четверти") {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                field.pauseThirdQuarter();
+                pauseThirdQuarterMenuItem.setEnabled(false);
+                resumeMenuItem.setEnabled(true);
+            }
+        };
+        pauseThirdQuarterMenuItem = pauseAngledBallsMenu.add(pauseThirdQuarter);
+        pauseThirdQuarterMenuItem.setEnabled(true);
+
+        Action pauseForthQuarter = new AbstractAction("Остановить мячи с углом 4 четверти") {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                field.pauseForthQuarter();
+                pauseForthQuarterMenuItem.setEnabled(false);
+                resumeMenuItem.setEnabled(true);
+            }
+        };
+        pauseForthQuarterMenuItem = pauseAngledBallsMenu.add(pauseForthQuarter);
+        pauseForthQuarterMenuItem.setEnabled(true);
+
+        controlMenu.add(pauseAngledBallsMenu);
 
         // Добавить в центр граничной компоновки поле Field
         getContentPane().add(field, BorderLayout.CENTER);

@@ -11,9 +11,15 @@ public class Field extends JPanel {
 
 
     private boolean isPaused;
+
     private boolean redBallsPaused;
     private boolean greenBallsPaused;
     private boolean blueBallsPaused;
+
+    private boolean firstQuarterPaused;
+    private boolean secondQuarterPaused;
+    private boolean thirdQuarterPaused;
+    private boolean forthQuarterPaused;
 
 
     // Динамический список скачущих мячей
@@ -43,6 +49,19 @@ public class Field extends JPanel {
         blueBallsPaused = true;
     }
 
+    public void pauseFirstQuarter(){
+        firstQuarterPaused = true;
+    }
+    public void pauseSecondQuarter(){
+        secondQuarterPaused = true;
+    }
+    public void pauseThirdQuarter(){
+        thirdQuarterPaused = true;
+    }
+    public void pauseForthQuarter(){
+        forthQuarterPaused = true;
+    }
+
     public void paintComponent(Graphics g) {
 
         super.paintComponent(g);
@@ -67,18 +86,28 @@ public class Field extends JPanel {
 
     public synchronized void resume() {
         isPaused = false;
+
         redBallsPaused = false;
         greenBallsPaused = false;
         blueBallsPaused = false;
+
+        firstQuarterPaused = false;
+        secondQuarterPaused = false;
+        thirdQuarterPaused = false;
+        forthQuarterPaused = false;
+
         notifyAll(); // Будим все ожидающие продолжения потоки
     }
 
 
     // Синхронизированный метод проверки, может ли мяч двигаться (не включен ли режим паузы?)
     public synchronized void canMove(BouncingBall ball) throws InterruptedException {
+
         if (isPaused) {
             wait(); // Поток, зашедший внутрь данного метода, засыпает
         }
+
+
         if (redBallsPaused && 2 * (ball.getGreenColor() +
                 ball.getBlueColor()) < ball.getRedColor()){
             wait();
@@ -89,6 +118,24 @@ public class Field extends JPanel {
         }
         if (blueBallsPaused && 2 * (ball.getRedColor() +
                 ball.getGreenColor()) < ball.getBlueColor()){
+            wait();
+        }
+
+
+        if (firstQuarterPaused && ball.getAngle() > 0
+                && ball.getAngle() < Math.PI / 2){
+            wait();
+        }
+        if (secondQuarterPaused && ball.getAngle() > Math.PI / 2
+                && ball.getAngle() < Math.PI){
+            wait();
+        }
+        if (thirdQuarterPaused && ball.getAngle() > Math.PI
+                && ball.getAngle() < 3 * Math.PI / 2){
+            wait();
+        }
+        if (forthQuarterPaused && ball.getAngle() > 3 * Math.PI / 2
+                && ball.getAngle() < 2 * Math.PI){
             wait();
         }
     }
